@@ -1,0 +1,59 @@
+<!doctype html>
+<html lang="fr">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>RailMeasure | Houston Track Distance</title>
+  <link rel="preconnect" href="https://unpkg.com" />
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" />
+  <link rel="stylesheet" href="/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand"><div class="brand-icon">⌁</div><div><strong>Rail<span>Measure</span></strong><small>HOUSTON • TRACK DISTANCE TOOL</small></div></div>
+    <div class="header-stats"><span class="live-dot"></span><span id="connectionText">Prêt</span><span class="header-sep"></span><span>UNITÉ <b>FEET (ft)</b></span></div>
+  </header>
+  <main class="workspace">
+    <aside class="sidebar">
+      <section class="section">
+        <div class="section-label"><span>01</span> CHARGER LA LIGNE</div>
+        <label for="linePreset">Réseau ferroviaire</label>
+        <select id="linePreset">
+          <option value="1741729">Houston METRORail — Red Line</option>
+          <option value="2728566">Houston METRORail — Green Line</option>
+          <option value="custom">Autre relation OSM…</option>
+        </select>
+        <div id="customWrap" class="hidden"><label for="relationId">Identifiant de relation OSM</label><input id="relationId" type="number" min="1" placeholder="Ex. 1741729" /></div>
+        <div class="button-row"><button class="btn primary" id="loadBtn">↻ &nbsp; Charger la voie</button><button class="btn secondary" id="importGeoBtn" title="Importer des voies exportées depuis QGIS au format GeoJSON">+ GeoJSON</button></div>
+        <input id="geoFile" type="file" accept=".geojson,.json,application/json" hidden />
+        <div id="routeStatus" class="status muted">Choisis une ligne et clique sur Charger.</div>
+      </section>
+      <section class="section">
+        <div class="section-label"><span>02</span> POSITIONNER LES POINTS</div>
+        <label for="countInput">Nombre de points à créer</label>
+        <div class="count-row"><input id="countInput" type="number" min="1" max="100" value="5" /><button class="btn primary" id="createBtn" disabled>Créer et répartir</button></div>
+        <button class="btn secondary full" id="addModeBtn" disabled>⊕ &nbsp; Ajouter des points par clic sur la carte</button>
+        <p class="hint">Les points sont aimantés sur la voie. Glisse-les pour ajuster leur position au niveau d'un panneau, d'une rue ou d'une station.</p>
+      </section>
+      <section class="section section-grow">
+        <div class="section-label"><span>03</span> DISTANCES ENTRE POINTS <span id="pointCount" class="counter">0</span></div>
+        <div id="pointsList" class="points-list"><div class="empty-state">Aucun point. Charge une voie puis crée des points ou clique sur la carte.</div></div>
+      </section>
+      <section class="section totals-section">
+        <div class="totals"><div><small>DISTANCE TOTALE SUR LES RAILS</small><div id="totalFeet" class="total-number">0 <span>ft</span></div><div id="totalMeters" class="meters">0,00 m</div></div><div class="total-icon">↗</div></div>
+        <div class="export-grid"><button class="btn secondary" id="csvBtn" disabled>↓ CSV</button><button class="btn secondary" id="jsonBtn" disabled>↓ Projet JSON</button><button class="btn secondary" id="geojsonBtn" disabled>↓ Tracé GeoJSON</button><button class="btn secondary" id="importProjectBtn">↑ Ouvrir projet</button></div>
+        <input id="projectFile" type="file" accept=".json,application/json" hidden />
+      </section>
+    </aside>
+    <section class="map-pane">
+      <div id="map"></div>
+      <div class="map-toolbar"><button id="streetBtn" class="map-chip active">Plan</button><button id="satBtn" class="map-chip">Satellite</button><button id="fitBtn" class="map-chip" title="Recentrer sur la voie">⌗ Centrer</button></div>
+      <div class="map-legend"><div><i class="swatch rail"></i> Voie ferroviaire</div><div><i class="swatch measure"></i> Distance mesurée</div><div><i class="swatch station"></i> Station</div><div><i class="swatch point"></i> Point déplaçable</div></div>
+      <div id="mapNotice" class="map-notice">Charge la ligne pour commencer.</div>
+      <div class="map-footer">Données © OpenStreetMap contributors · Fond satellite © Esri · Mesures calculées sur la géométrie OSM</div>
+    </section>
+  </main>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"></script>
+  <script src="/app.js"></script>
+</body>
+</html>
